@@ -10,8 +10,27 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "chart.js": "^4.4.7",
+    "d3": "^7.9.0",
+    "date-fns": "^2.30.0",
+    "lodash": "^4.17.21",
     "nuxt": "^3.15.1",
     "vue": "latest",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@types/d3": "^7.4.3",
+    "@types/node": "^22.10.5",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "sass": "^1.83.1",
+    "sass-loader": "^13.3.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
   }
 }
