@@ -1,3 +1,13 @@
+<!-- components/SentimentChart.vue -->
+<template>
+  <div class="chart-container h-full">
+    <Line
+        :data="chartData"
+        :options="chartOptions"
+    />
+  </div>
+</template>
+
 <script setup>
 import { computed } from 'vue'
 import { Line } from 'vue-chartjs'
@@ -66,7 +76,16 @@ const chartOptions = {
   scales: {
     y: {
       beginAtZero: true,
-      stacked: false
+      stacked: false,
+      grid: {
+        drawBorder: false,
+        color: 'rgba(0,0,0,0.05)'
+      }
+    },
+    x: {
+      grid: {
+        display: false
+      }
     }
   },
   plugins: {
@@ -74,18 +93,20 @@ const chartOptions = {
       display: false
     },
     legend: {
-      position: 'bottom'
+      position: 'bottom',
+      labels: {
+        boxWidth: 12,
+        padding: 15
+      }
     }
   }
 }
 </script>
 
-
-<template>
-  <div class="chart">
-    <Line
-        :data="chartData"
-        :options="chartOptions"
-    />
-  </div>
-</template>
+<style scoped>
+.chart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+</style>
