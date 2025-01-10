@@ -1,6 +1,16 @@
+<!-- components/GeoHeatmap.vue -->
+<template>
+  <div class="chart-container h-full">
+    <Bar
+        :data="chartData"
+        :options="chartOptions"
+    />
+  </div>
+</template>
+
 <script setup>
-import { computed } from 'vue'
-import { Bar } from 'vue-chartjs'
+import {computed} from 'vue'
+import {Bar} from 'vue-chartjs'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,7 +49,8 @@ const chartData = computed(() => ({
         return `hsla(${hue}, 70%, 50%, 0.8)`
       }),
       borderWidth: 1,
-      borderColor: '#fff'
+      borderColor: '#fff',
+      maxBarThickness: 50  // Prevent bars from becoming too thick
     }
   ]
 }))
@@ -47,17 +58,33 @@ const chartData = computed(() => ({
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  layout: {
+    padding: {
+      top: 20,
+      bottom: 20
+    }
+  },
   scales: {
     y: {
       beginAtZero: true,
-      title: {
-        display: true,
-        text: 'Number of Tweets'
+      grid: {
+        drawBorder: false,
+        color: 'rgba(0,0,0,0.05)'
+      },
+      ticks: {
+        font: {
+          size: 12
+        }
       }
     },
     x: {
       grid: {
         display: false
+      },
+      ticks: {
+        font: {
+          size: 12
+        }
       }
     }
   },
@@ -67,7 +94,7 @@ const chartOptions = {
     },
     tooltip: {
       callbacks: {
-        afterLabel: function(context) {
+        afterLabel: function (context) {
           const sentiment = props.data[context.dataIndex].sentiment
           return `Sentiment: ${(sentiment * 100).toFixed(1)}% positive`
         }
@@ -77,11 +104,10 @@ const chartOptions = {
 }
 </script>
 
-<template>
-  <div class="chart">
-    <Bar
-        :data="chartData"
-        :options="chartOptions"
-    />
-  </div>
-</template>
+<style scoped>
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+</style>

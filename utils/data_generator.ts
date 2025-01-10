@@ -58,12 +58,6 @@ interface HashtagTrend {
     count: number;
 }
 
-interface HourlyDataPoint {
-    timestamp: string;
-    sentiment: SentimentDistribution;
-    emotions: EmotionDistribution;
-}
-
 interface DashboardData {
     hourlyData: HourlyDataPoint[];
     recentTweets: Tweet[];
@@ -76,20 +70,35 @@ interface DashboardData {
     };
 }
 
-export const generateMockData = (): DashboardData => {
-    const emotions: EmotionType[] = ['joy', 'anger', 'fear', 'sadness', 'disgust'];
-    const sources: string[] = ['Twitter Web App', 'Twitter for iPhone', 'Twitter for Android'];
-    const hashtags: string[] = ['#universitylife', '#campusevents', '#research', '#academics', '#studentlife'];
-    const keywords: string[] = ['research', 'campus', 'professors', 'students', 'classes', 'events', 'facilities'];
+interface Engagement {
+    retweets: number;
+    likes: number;
+    replies: number;
+}
 
-    const hourlyData: HourlyDataPoint[] = Array.from({ length: 24 }, (_, i) => {
+// Update HourlyDataPoint interface
+interface HourlyDataPoint {
+    timestamp: string;
+    sentiment: SentimentDistribution;
+    emotions: EmotionDistribution;
+    engagement: Engagement;  // Add this line
+}
+
+export const generateMockData = (): DashboardData => {
+    const emotions = ['joy', 'anger', 'fear', 'sadness', 'disgust'];
+    const sources = ['Twitter Web App', 'Twitter for iPhone', 'Twitter for Android'];
+    const hashtags = ['#universitylife', '#campusevents', '#research', '#academics', '#studentlife'];
+    const keywords = ['research', 'campus', 'professors', 'students', 'classes', 'events', 'facilities'];
+
+    const generateInitialEngagement = () => ({
+        retweets: Math.floor(Math.random() * 50 + 30),
+        likes: Math.floor(Math.random() * 100 + 50),
+        replies: Math.floor(Math.random() * 30 + 10)
+    });
+
+    const hourlyData = Array.from({length: 24}, (_, i) => {
         const date = new Date();
         date.setHours(date.getHours() - i);
-
-        const emotionDistribution: EmotionDistribution = emotions.reduce((acc, emotion) => ({
-            ...acc,
-            [emotion]: Math.floor(Math.random() * 100)
-        }), {} as EmotionDistribution);
 
         return {
             timestamp: date.toISOString(),
@@ -98,11 +107,15 @@ export const generateMockData = (): DashboardData => {
                 neutral: Math.floor(Math.random() * 30) + 20,
                 negative: Math.floor(Math.random() * 20) + 10,
             },
-            emotions: emotionDistribution
+            emotions: emotions.reduce((acc, emotion) => {
+                acc[emotion] = Math.floor(Math.random() * 100);
+                return acc;
+            }, {}),
+            engagement: generateInitialEngagement() // Add engagement data
         };
     }).reverse();
 
-    const recentTweets: Tweet[] = Array.from({ length: 50 }, (_, i) => ({
+    const recentTweets: Tweet[] = Array.from({length: 50}, (_, i) => ({
         id: `tweet_${i}`,
         text: `Sample tweet ${i} about university life and campus activities #university`,
         created_at: new Date(Date.now() - Math.random() * 86400000).toISOString(),
@@ -110,7 +123,7 @@ export const generateMockData = (): DashboardData => {
         subjectivity: Number(Math.random().toFixed(2)),
         emotion: emotions[Math.floor(Math.random() * emotions.length)],
         keywords: Array.from(
-            { length: Math.floor(Math.random() * 3) + 1 },
+            {length: Math.floor(Math.random() * 3) + 1},
             () => keywords[Math.floor(Math.random() * keywords.length)]
         ),
         public_metrics: {
@@ -125,32 +138,27 @@ export const generateMockData = (): DashboardData => {
             verified: Math.random() > 0.9,
         },
         hashtags: Array.from(
-            { length: Math.floor(Math.random() * 2) + 1 },
+            {length: Math.floor(Math.random() * 2) + 1},
             () => hashtags[Math.floor(Math.random() * hashtags.length)]
         ),
         source: sources[Math.floor(Math.random() * sources.length)],
     }));
 
     const geoData: GeoRegion[] = [
-        { region: 'North Campus', sentiment: 0.8, tweet_count: 150 },
-        { region: 'South Campus', sentiment: 0.6, tweet_count: 120 },
-        { region: 'Downtown', sentiment: 0.4, tweet_count: 200 },
-        { region: 'Research Park', sentiment: 0.7, tweet_count: 80 },
-        { region: 'Student Housing', sentiment: 0.5, tweet_count: 180 },
+        {region: 'North Campus', sentiment: 0.8, tweet_count: 150},
+        {region: 'South Campus', sentiment: 0.6, tweet_count: 120},
+        {region: 'Downtown', sentiment: 0.4, tweet_count: 200},
+        {region: 'Research Park', sentiment: 0.7, tweet_count: 80},
+        {region: 'Student Housing', sentiment: 0.5, tweet_count: 180},
     ];
 
     const topicClusters: TopicCluster[] = [
-        { topic: 'Academic Programs', count: 245, sentiment: 0.6 },
-        { topic: 'Campus Life', count: 189, sentiment: 0.8 },
-        { topic: 'Research', count: 156, sentiment: 0.7 },
-        { topic: 'Sports', count: 134, sentiment: 0.9 },
-        { topic: 'Facilities', count: 98, sentiment: 0.4 },
+        {topic: 'Academic Programs', count: 245, sentiment: 0.6},
+        {topic: 'Campus Life', count: 189, sentiment: 0.8},
+        {topic: 'Research', count: 156, sentiment: 0.7},
+        {topic: 'Sports', count: 134, sentiment: 0.9},
+        {topic: 'Facilities', count: 98, sentiment: 0.4},
     ];
-
-    const trending_hashtags: HashtagTrend[] = hashtags.map(tag => ({
-        tag,
-        count: Math.floor(Math.random() * 100) + 50
-    }));
 
     return {
         hourlyData,
@@ -160,7 +168,10 @@ export const generateMockData = (): DashboardData => {
         current: {
             total_tweets: 1234,
             average_sentiment: 0.65,
-            trending_hashtags,
+            trending_hashtags: hashtags.map(tag => ({
+                tag,
+                count: Math.floor(Math.random() * 100) + 50
+            })),
         }
     };
 };

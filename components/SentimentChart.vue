@@ -1,16 +1,31 @@
 <!-- components/SentimentChart.vue -->
 <template>
-  <div class="chart-container h-full">
-    <Line
-        :data="chartData"
-        :options="chartOptions"
-    />
+  <div class="h-full flex flex-col">
+    <div class="flex justify-between items-center mb-4">
+      <select
+          v-model="selectedTimeframe"
+          class="w-40 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          @change="timeframeChanged"
+      >
+        <option value="day">Past 24 Hours</option>
+        <option value="week">Past Week</option>
+        <option value="month">Past Month</option>
+        <option value="year">Past Year</option>
+      </select>
+    </div>
+
+    <div class="flex-grow relative">
+      <Line
+          :data="chartData"
+          :options="chartOptions"
+      />
+    </div>
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue'
-import { Line } from 'vue-chartjs'
+<script setup lang="ts">
+import {ref, computed} from 'vue'
+import {Line} from 'vue-chartjs'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -32,15 +47,36 @@ ChartJS.register(
     Legend
 )
 
-const props = defineProps({
-  data: {
-    type: Array,
-    required: true
+const props = defineProps<{
+  data: any[]
+}>()
+
+const emit = defineEmits(['timeframe-changed'])
+
+const selectedTimeframe = ref('day')
+
+const formatTimestamp = (timestamp: string) => {
+  const date = new Date(timestamp)
+  switch (selectedTimeframe.value) {
+    case 'day':
+      return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+    case 'week':
+      return date.toLocaleDateString([], {weekday: 'short', hour: '2-digit'})
+    case 'month':
+      return date.toLocaleDateString([], {month: 'short', day: 'numeric'})
+    case 'year':
+      return date.toLocaleDateString([], {month: 'short', day: 'numeric'})
+    default:
+      return date.toLocaleTimeString()
   }
-})
+}
+
+const timeframeChanged = () => {
+  emit('timeframe-changed', selectedTimeframe.value)
+}
 
 const chartData = computed(() => ({
-  labels: props.data.map(d => new Date(d.timestamp).toLocaleTimeString()),
+  labels: props.data.map(d => formatTimestamp(d.timestamp)),
   datasets: [
     {
       label: 'Positive',
@@ -76,7 +112,6 @@ const chartOptions = {
   scales: {
     y: {
       beginAtZero: true,
-      stacked: false,
       grid: {
         drawBorder: false,
         color: 'rgba(0,0,0,0.05)'
@@ -85,13 +120,14 @@ const chartOptions = {
     x: {
       grid: {
         display: false
+      },
+      ticks: {
+        maxRotation: 45,
+        minRotation: 45
       }
     }
   },
   plugins: {
-    title: {
-      display: false
-    },
     legend: {
       position: 'bottom',
       labels: {
@@ -104,9 +140,5 @@ const chartOptions = {
 </script>
 
 <style scoped>
-.chart-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+
 </style>
