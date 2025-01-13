@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import {defineProps, defineEmits} from 'vue'
 
 const props = defineProps({
   hashtags: {
@@ -29,8 +29,10 @@ const getColor = (count) => {
 </script>
 
 <template>
-  <div ref="cloudContainer" class="chart chart--small">
-    <div class="flex flex-wrap gap-2 justify-center items-center h-full">
+  <div class="h-full flex flex-col">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Trending Hashtags</h2>
+    <div ref="cloudContainer" class="chart chart--small">
+      <div class="flex flex-wrap gap-2 justify-center items-center h-full">
       <span
           v-for="hashtag in hashtags"
           :key="hashtag.tag"
@@ -43,6 +45,7 @@ const getColor = (count) => {
       >
         {{ hashtag.tag }}
       </span>
+      </div>
     </div>
   </div>
 </template>

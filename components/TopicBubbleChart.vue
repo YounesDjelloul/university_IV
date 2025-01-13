@@ -76,7 +76,7 @@ const createBubbleChart = () => {
       .attr('r', d => d.radius)
       .attr('fill', d => colorScale(d.sentiment))
       .attr('stroke', '#fff')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 1)
 
   bubbles.append('text')
       .text(d => d.topic)

@@ -1,10 +1,13 @@
 <!-- components/EngagementChart.vue -->
 <template>
-  <div class="chart-container h-full">
-    <Line
-        :data="chartData"
-        :options="chartOptions"
-    />
+  <div class="h-full flex flex-col">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Engagement Trends</h2>
+    <div class="flex-grow">
+      <Line
+          :data="chartData"
+          :options="chartOptions"
+      />
+    </div>
   </div>
 </template>
 

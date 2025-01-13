@@ -50,8 +50,8 @@ const chartOptions = {
       }
     }
   },
-  cutout: '65%',
-  radius: '90%'
+  cutout: '60%',
+  radius: '100%'
 }
 </script>
 

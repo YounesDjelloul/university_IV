@@ -87,8 +87,31 @@ interface HourlyDataPoint {
 export const generateMockData = (): DashboardData => {
     const emotions = ['joy', 'anger', 'fear', 'sadness', 'disgust'];
     const sources = ['Twitter Web App', 'Twitter for iPhone', 'Twitter for Android'];
-    const hashtags = ['#universitylife', '#campusevents', '#research', '#academics', '#studentlife'];
-    const keywords = ['research', 'campus', 'professors', 'students', 'classes', 'events', 'facilities'];
+    const hashtags = [
+        '#innovation',
+        '#techresearch',
+        '#futurescience',
+        '#sustainability',
+        '#globalcampus',
+        '#diversityinedu',
+        '#scholarships',
+        '#mentorship',
+        '#entrepreneurship',
+        '#artsandculture'
+    ];
+
+    const keywords = [
+        'innovation',
+        'sustainability',
+        'diversity',
+        'entrepreneurship',
+        'technology',
+        'partnerships',
+        'mentorship',
+        'leadership',
+        'collaboration',
+        'culture'
+    ];
 
     const generateInitialEngagement = () => ({
         retweets: Math.floor(Math.random() * 50 + 30),
@@ -153,11 +176,13 @@ export const generateMockData = (): DashboardData => {
     ];
 
     const topicClusters: TopicCluster[] = [
-        {topic: 'Academic Programs', count: 245, sentiment: 0.6},
-        {topic: 'Campus Life', count: 189, sentiment: 0.8},
-        {topic: 'Research', count: 156, sentiment: 0.7},
-        {topic: 'Sports', count: 134, sentiment: 0.9},
-        {topic: 'Facilities', count: 98, sentiment: 0.4},
+        {topic: 'Innovation Hub', count: 278, sentiment: 0.75},
+        {topic: 'Global Impact', count: 234, sentiment: 0.82},
+        {topic: 'Sustainability', count: 198, sentiment: 0.5},
+        {topic: 'Arts & Culture', count: 167, sentiment: 0.31},
+        {topic: 'Alumni', count: 145, sentiment: 0.79},
+        {topic: 'Career Success', count: 132, sentiment: 0.85},
+        {topic: 'Community Service', count: 112, sentiment: 0.93}
     ];
 
     return {

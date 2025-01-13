@@ -2,6 +2,7 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold text-gray-800">Sentiment Trends</h2>
       <select
           v-model="selectedTimeframe"
           class="w-40 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

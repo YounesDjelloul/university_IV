@@ -1,10 +1,13 @@
 <!-- components/GeoHeatmap.vue -->
 <template>
-  <div class="chart-container h-full">
-    <Bar
-        :data="chartData"
-        :options="chartOptions"
-    />
+  <div class="h-full flex flex-col">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Geographic Distribution</h2>
+    <div class="flex-grow">
+      <Bar
+          :data="chartData"
+          :options="chartOptions"
+      />
+    </div>
   </div>
 </template>
 

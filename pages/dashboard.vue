@@ -181,7 +181,7 @@ onMounted(() => {
     if (isAutoUpdateEnabled.value) {
       updateData()
     }
-  }, 5000)
+  }, 6000)
 })
 
 const currentEmotions = computed(() =>
@@ -283,7 +283,7 @@ const columnSpan = computed(() => {
             :key="section.id"
             @click="toggleSection(section.id)"
             :class="[
-            'px-3 py-1 rounded-lg text-sm font-medium transition-colors',
+            'px-3 py-1 rounded-lg text-md font-medium transition-colors',
             activeSections.includes(section.id)
               ? 'bg-blue-600 text-white'
               : 'bg-white text-gray-600 hover:bg-gray-50'
@@ -313,22 +313,23 @@ const columnSpan = computed(() => {
       <!-- Left Column: Key Metrics + Engagement -->
       <div v-if="hasLeftColumn" class="space-y-4">
         <div v-if="activeSections.includes('metrics')"
-             class="bg-white rounded-lg p-4 shadow-sm h-[40%]">
-          <div class="grid grid-rows-4 gap-4">
+             class="bg-white rounded-lg p-4 shadow-sm h-[40%]"
+             style="display:flex;flex-direction:column;">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Summary Metrics</h2>
+          <div class="flex-grow grid grid-rows-4 gap-4">
             <div v-for="metric in keyMetrics"
                  :key="metric.label"
                  class="flex items-center p-2 bg-gray-50 rounded-lg">
-              <div class="text-2xl mr-3">{{ metric.icon }}</div>
+              <div class="text-4xl mr-3">{{ metric.icon }}</div>
               <div>
-                <div class="text-lg font-semibold">{{ metric.value }}</div>
-                <div class="text-sm text-gray-600">{{ metric.label }}</div>
+                <div class="text-xl font-semibold">{{ metric.value }}</div>
+                <div class="text-lg text-gray-600">{{ metric.label }}</div>
               </div>
             </div>
           </div>
         </div>
         <div v-if="activeSections.includes('engagement')"
              class="bg-white rounded-lg p-4 shadow-sm h-[55%]">
-          <h3 class="text-sm font-medium mb-2">Engagement Trends</h3>
           <EngagementChart :data="dashboardData.hourlyData"/>
         </div>
       </div>
@@ -341,11 +342,15 @@ const columnSpan = computed(() => {
         </div>
         <div class="grid gap-4 h-1/2" :class="middleBottomColumns">
           <div v-if="activeSections.includes('emotions')"
-               class="bg-white rounded-lg p-4 shadow-sm flex items-center justify-center">
+               class="bg-white rounded-lg p-4 shadow-sm flex items-center justify-center"
+               style="flex-direction:column;justify-content: space-around;">
+            <h3 class="text-lg font-medium mb-2">Emotions Donut</h3>
             <EmotionChart :data="currentEmotions"/>
           </div>
           <div v-if="activeSections.includes('topics')"
-               class="bg-white rounded-lg p-4 shadow-sm flex items-center justify-center">
+               class="bg-white rounded-lg p-4 shadow-sm flex items-center justify-center"
+               style="flex-direction:column;justify-content: space-around;">
+            <h3 class="text-lg font-medium mb-2">Trending Topics</h3>
             <TopicBubbleChart :data="dashboardData.topicClusters"/>
           </div>
         </div>
@@ -362,7 +367,8 @@ const columnSpan = computed(() => {
           <HashtagCloud :hashtags="dashboardData.current.trending_hashtags"/>
         </div>
         <div v-if="activeSections.includes('tweets')"
-             class="bg-white rounded-lg p-4 shadow-sm h-[30%] overflow-auto">
+             class="bg-white rounded-lg p-4 shadow-sm h-[33%] overflow-auto">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Tweets</h2>
           <div class="space-y-3">
             <div v-for="tweet in recentTweetsLimited"
                  :key="tweet.id"
@@ -373,8 +379,8 @@ const columnSpan = computed(() => {
                   {{ new Date(tweet.created_at).toLocaleTimeString() }}
                 </div>
               </div>
-              <p class="text-sm mb-2">{{ tweet.text }}</p>
-              <div class="flex items-center space-x-4 text-xs text-gray-600">
+              <p class="text-lg mb-2">{{ tweet.text }}</p>
+              <div class="flex items-center space-x-4 text-lg text-gray-600">
               <span class="flex items-center">
                 <span class="mr-1">🔄</span>
                 {{ tweet.public_metrics.retweet_count }}
