@@ -8,4 +8,10 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
+    app: {
+        baseURL: ''
+    },
+    nitro: {
+        preset: 'github_pages'
+    },
 })
