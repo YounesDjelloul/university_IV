@@ -9,7 +9,7 @@ export default defineNuxtConfig({
         },
     },
     app: {
-        baseURL: ''
+        baseURL: '/university_IV/'
     },
     nitro: {
         preset: 'github_pages'
