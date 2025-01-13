@@ -366,6 +366,7 @@ const columnSpan = computed(() => {
              class="bg-white rounded-lg p-4 shadow-sm h-[20%]">
           <HashtagCloud :hashtags="dashboardData.current.trending_hashtags"/>
         </div>
+<!--        hey-->
         <div v-if="activeSections.includes('tweets')"
              class="bg-white rounded-lg p-4 shadow-sm h-[33%] overflow-auto">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Tweets</h2>
